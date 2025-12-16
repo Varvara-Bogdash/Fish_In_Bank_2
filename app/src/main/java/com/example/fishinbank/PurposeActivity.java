@@ -1,12 +1,12 @@
 package com.example.fishinbank;
 
-import static java.lang.Integer.parseInt;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,18 +17,19 @@ import android.widget.TextView;
 public class PurposeActivity extends AppCompatActivity {
     TextView allCountText;
     TextView countText;
-    String allMoney;
-    String money;
+    String allMoney = "0";
+    String money = "0";
     SaveClass saveClass;
-    int plusCount;
-    int plusAllCount;
-    int minusCount;
-    int minusAllCount;
-    int count;
-    int allCount;
+    int plusCount = 0;
+    int plusAllCount = 0;
+    int minusCount = 0;
+    int minusAllCount = 0;
+    int count = 0;
+    int allCount = 0;
     ImageView cupImage;
     int countOfClick = 0;
 
+    private boolean congratulationShown = false;
 
     ActivityResultLauncher<Intent> addPurposeLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -37,23 +38,23 @@ public class PurposeActivity extends AppCompatActivity {
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         Intent data = result.getData();
-                        allMoney = data.getStringExtra("allMoney");
-                        money = data.getStringExtra("money");
-                        allCount = allCount + Integer.parseInt(allMoney);
-                        count = count + Integer.parseInt(money);
-                        // Обновляем TextView с нужными надписями и значениями
-                        if (allMoney != null && !allMoney.isEmpty()) {
-                            allCountText.setText("Желаемая сумма: " + String.valueOf(allCount));
-                        }
-                        if (money != null && !money.isEmpty()) {
-                            countText.setText("Накоплено: " + String.valueOf(count));
-                        }
-                        if(count>=allCount){
-                            cupImage.setImageResource(R.drawable.cup_all);
-                            countOfClick=0;
-                        }
-                    }
+                        String newAllMoney = data.getStringExtra("allMoney");
+                        String newMoney = data.getStringExtra("money");
 
+                        if (newAllMoney != null && !newAllMoney.isEmpty()) {
+                            allMoney = newAllMoney;
+                            allCount = Integer.parseInt(allMoney);
+                            allCountText.setText("Желаемая сумма: " + allCount);
+                            congratulationShown = false;
+                        }
+                        if (newMoney != null && !newMoney.isEmpty()) {
+                            money = newMoney;
+                            count = Integer.parseInt(money);
+                            countText.setText("Накоплено: " + count);
+                        }
+
+                        updateCupImage();
+                    }
                 }
             });
 
@@ -64,20 +65,60 @@ public class PurposeActivity extends AppCompatActivity {
 
         allCountText = findViewById(R.id.allCountText);
         countText = findViewById(R.id.cointText);
-        cupImage = findViewById(R.id.cupImage); // Инициализируем ImageView
+        cupImage = findViewById(R.id.cupImage);
         allCountText.setFreezesText(true);
         countText.setFreezesText(true);
         saveClass = new SaveClass();
         cupImage.setImageResource(R.drawable.cup);
+
+        allCountText.setText("Желаемая сумма: 0");
+        countText.setText("Накоплено: 0");
+    }
+
+    private void updateCupImage() {
+        if (count >= allCount && allCount > 0) {
+            cupImage.setImageResource(R.drawable.cup_all);
+            countOfClick = 0;
+
+            // Показываем поздравление, если еще не показывали
+            if (!congratulationShown) {
+                showCongratulationsDialog();
+                congratulationShown = true;
+            }
+        } else {
+            // Сбрасываем флаг, если счет стал меньше цели
+            if (congratulationShown && count < allCount) {
+                congratulationShown = false;
+            }
+
+            if (countOfClick <= 5) {
+                cupImage.setImageResource(R.drawable.cup_add);
+            } else if (countOfClick <= 10) {
+                cupImage.setImageResource(R.drawable.cup_one_quarter);
+            } else if (countOfClick <= 15) {
+                cupImage.setImageResource(R.drawable.cup_half);
+            } else {
+                cupImage.setImageResource(R.drawable.cup_three_quarter);
+            }
+        }
+    }
+
+    private void showCongratulationsDialog() {
+        // Используем простой AlertDialog без кастомного layout
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("🎉 Поздравляем!");
+        builder.setMessage("Вы достигли своей цели!\nВы накопили " + count + " из " + allCount);
+        builder.setPositiveButton("Ура!", (dialog, which) -> {
+            dialog.dismiss();
+        });
+        builder.setCancelable(false);
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     public void addCount(View view) {
         Intent intent = new Intent(this, AddPurposeActivity.class);
         addPurposeLauncher.launch(intent);
-        if(count>=allCount){
-            cupImage.setImageResource(R.drawable.cup_all);
-            countOfClick=0;
-        }
     }
 
     public void home(View view) {
@@ -97,88 +138,33 @@ public class PurposeActivity extends AppCompatActivity {
 
     public void minusCount(View view) {
         minusCount -= 500;
-        count = Integer.parseInt(plusCount + minusCount + money);
-        countText.setText("Накоплено: " + String.valueOf(count));
+        count = plusCount + minusCount + Integer.parseInt(money);
+        countText.setText("Накоплено: " + count);
         countOfClick++;
-        if(countOfClick <= 5) {
-            cupImage.setImageResource(R.drawable.cup_add);
-            if(count>=allCount){
-                cupImage.setImageResource(R.drawable.cup_all);
-                countOfClick=0;
-            }
-        } else if (countOfClick <= 10) {
-            cupImage.setImageResource(R.drawable.cup_one_quarter);
-            if(count>=allCount){
-                cupImage.setImageResource(R.drawable.cup_all);
-                countOfClick=0;
-            }
-        } else if (countOfClick<=15) {
-            cupImage.setImageResource(R.drawable.cup_half);
-            if(count>=allCount){
-                cupImage.setImageResource(R.drawable.cup_all);
-                countOfClick=0;
-            }
-        } else {
-            cupImage.setImageResource(R.drawable.cup_three_quarter);
-            if(count>=allCount){
-                cupImage.setImageResource(R.drawable.cup_all);
-                countOfClick=0;
-            }
-        }
-
-
+        updateCupImage();
     }
 
     public void plusCount(View view) {
         plusCount += 1000;
-        count = Integer.parseInt(plusCount + minusCount + money);
-        countText.setText("Накоплено: " + String.valueOf(count));
+        count = plusCount + minusCount + Integer.parseInt(money);
+        countText.setText("Накоплено: " + count);
         countOfClick++;
-        if(countOfClick <= 5) {
-            cupImage.setImageResource(R.drawable.cup_add);
-            if(count>=allCount){
-                cupImage.setImageResource(R.drawable.cup_all);
-                countOfClick=0;
-            }
-        } else if (countOfClick <= 10) {
-            cupImage.setImageResource(R.drawable.cup_one_quarter);
-            if(count>=allCount){
-                cupImage.setImageResource(R.drawable.cup_all);
-                countOfClick=0;
-            }
-        } else if (countOfClick<=15) {
-            cupImage.setImageResource(R.drawable.cup_half);
-            if(count>=allCount){
-                cupImage.setImageResource(R.drawable.cup_all);
-                countOfClick=0;
-            }
-        } else {
-            cupImage.setImageResource(R.drawable.cup_three_quarter);
-            if(count>=allCount){
-                cupImage.setImageResource(R.drawable.cup_all);
-                countOfClick=0;
-            }
-        }
-
+        updateCupImage();
     }
 
     public void plusAllCount(View view) {
         plusAllCount += 1000;
-        allCount = Integer.parseInt(plusAllCount + minusAllCount + allMoney);
-        allCountText.setText("Желаемая сумма: " + String.valueOf(allCount));
-        if(count>=allCount){
-            cupImage.setImageResource(R.drawable.cup_all);
-            countOfClick=0;
-        }
+        allCount = plusAllCount + minusAllCount + Integer.parseInt(allMoney);
+        allCountText.setText("Желаемая сумма: " + allCount);
+        congratulationShown = false;
+        updateCupImage();
     }
 
     public void minusAllCount(View view) {
         minusAllCount -= 500;
-        allCount = Integer.parseInt(plusAllCount + minusAllCount + allMoney);
-        allCountText.setText("Желаемая сумма: " + String.valueOf(allCount));
-        if(count>=allCount){
-            cupImage.setImageResource(R.drawable.cup_all);
-            countOfClick=0;
-        }
+        allCount = plusAllCount + minusAllCount + Integer.parseInt(allMoney);
+        allCountText.setText("Желаемая сумма: " + allCount);
+        congratulationShown = false;
+        updateCupImage();
     }
 }

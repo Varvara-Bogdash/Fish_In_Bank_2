@@ -77,28 +77,28 @@
 
     <TextView
         android:id="@+id/allCountText"
-        android:layout_width="262dp"
-        android:layout_height="61dp"
+        android:layout_width="228dp"
+        android:layout_height="62dp"
         android:text="Желаемая сумма: "
         android:textColor="#FFEB3B"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.295"
+        app:layout_constraintHorizontal_bias="0.181"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.176" />
+        app:layout_constraintVertical_bias="0.174" />
 
     <TextView
         android:id="@+id/cointText"
-        android:layout_width="262dp"
-        android:layout_height="61dp"
+        android:layout_width="228dp"
+        android:layout_height="62dp"
         android:text="Накоплено: "
         android:textColor="#FFEB3B"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.295"
+        app:layout_constraintHorizontal_bias="0.18"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.285" />
@@ -159,54 +159,66 @@
 
     <Button
         android:id="@+id/buttonMinAll"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
+        android:layout_width="58dp"
+        android:layout_height="58dp"
         android:onClick="minusAllCount"
         android:text="-"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.814"
+        app:layout_constraintHorizontal_bias="0.739"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.171" />
+        app:layout_constraintVertical_bias="0.173" />
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
+        android:layout_width="58dp"
+        android:layout_height="58dp"
+        android:background="#FFEB3B"
+        android:backgroundTint="#FFEB3B"
+        android:fallbackLineSpacing="true"
+        android:hapticFeedbackEnabled="true"
         android:onClick="plusAllCount"
+        android:outlineAmbientShadowColor="#FFEB3B"
+        android:outlineSpotShadowColor="#FFEB3B"
+        android:shadowColor="#FFEB3B"
         android:text="+"
+        android:textColorLink="#FFEB3B"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.956"
+        app:layout_constraintHorizontal_bias="0.957"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.171" />
+        app:layout_constraintVertical_bias="0.173"
+        app:rippleColor="#FFEB3B"
+        app:strokeColor="#FFEB3B" />
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
+        android:layout_width="58dp"
+        android:layout_height="58dp"
         android:onClick="minusCount"
         android:text="-"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.814"
+        app:layout_constraintHorizontal_bias="0.739"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.278" />
+        app:layout_constraintVertical_bias="0.283" />
 
     <Button
         android:id="@+id/button4"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
+        android:layout_width="58dp"
+        android:layout_height="58dp"
         android:onClick="plusCount"
         android:text="+"
+        android:textColorLink="#FFEB3B"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.956"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.278" />
+        app:layout_constraintVertical_bias="0.278"
+        app:rippleColor="#FFEB3B" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

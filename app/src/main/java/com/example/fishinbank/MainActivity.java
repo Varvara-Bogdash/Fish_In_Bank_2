@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateDisplay() {
         // Обновляем отображение доходов и расходов
-        String incomeText = "доход: " + String.format("%.2f", DataManager.totalIncome) + " руб.";
-        String chargeText = "расход: " + String.format("%.2f", DataManager.totalExpense) + " руб.";
+        String incomeText = String.format("%.2f", DataManager.totalIncome) + " руб.";
+        String chargeText = String.format("%.2f", DataManager.totalExpense) + " руб.";
 
         incomeTextView.setText(incomeText);
         chargeTextView.setText(chargeText);

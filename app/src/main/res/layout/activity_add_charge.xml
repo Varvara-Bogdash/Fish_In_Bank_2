@@ -40,12 +40,12 @@
 
     <Button
         android:id="@+id/btn_add"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
+        android:layout_width="151dp"
+        android:layout_height="67dp"
         android:layout_marginTop="32dp"
         android:backgroundTint="#FFEB3B"
         android:text="Добавить расход"
-        android:textColor="#FFFFFF"
+        android:textColor="#365006"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -11,6 +11,7 @@
         android:id="@+id/homeButton"
         android:layout_width="69dp"
         android:layout_height="57dp"
+        android:backgroundTint="#3A5606"
         android:onClick="home"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

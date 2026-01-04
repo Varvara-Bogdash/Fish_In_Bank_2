@@ -15,7 +15,7 @@ public class IncomeActivity extends AppCompatActivity {
 
         // Находим все кнопки категорий доходов и назначаем обработчики
         setupButton(R.id.investitionButton, "Доходы по вкладам");
-        setupButton(R.id.imageButton3, "Доходы по акциям/облигациям");
+        setupButton(R.id.imageButton3, "Доходы по инвестициям");
         setupButton(R.id.salaryButton, "Зарплата");
         setupButton(R.id.incomeAddButton, "Частичная занятость");
         setupButton(R.id.anywayButton, "Другие доходы");

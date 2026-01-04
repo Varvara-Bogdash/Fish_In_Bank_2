@@ -9,8 +9,8 @@
 
     <TextView
         android:id="@+id/tv_category"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="311dp"
+        android:layout_height="130dp"
         android:text="Категория:"
         android:textColor="#FFEB3B"
         android:textSize="24sp"
@@ -41,7 +41,7 @@
         android:layout_marginTop="32dp"
         android:backgroundTint="#FEEA3B"
         android:text="Добавить"
-        android:textColor="#FFFFFF"
+        android:textColor="#365006"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

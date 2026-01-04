@@ -7,59 +7,67 @@
     android:background="@drawable/fon"
     tools:context=".MainActivity">
 
+    <!-- Диаграмма расходов -->
+
+    <!-- Диаграмма доходов -->
+
+    <!-- Остальные элементы вашего макета остаются без изменений -->
+
     <TextView
         android:id="@+id/income"
-        android:layout_width="325dp"
-        android:layout_height="42dp"
-        android:text="доход:"
+        android:layout_width="162dp"
+        android:layout_height="56dp"
+        android:background="#365006"
+        android:gravity="center"
         android:textColor="#FFEB3B"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.555"
+        app:layout_constraintHorizontal_bias="0.883"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.073" />
+        app:layout_constraintVertical_bias="0.066" />
 
     <TextView
         android:id="@+id/charge"
-        android:layout_width="325dp"
-        android:layout_height="42dp"
-        android:text="расход:"
+        android:layout_width="162dp"
+        android:layout_height="56dp"
+        android:background="#365006"
+        android:gravity="center"
         android:textColor="#FFEB3B"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.558"
+        app:layout_constraintHorizontal_bias="0.883"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/income"
-        app:layout_constraintVertical_bias="0.033" />
+        app:layout_constraintVertical_bias="0.027" />
 
-    <!-- Диаграмма расходов -->
     <com.example.fishinbank.PieChartView
         android:id="@+id/expenseChart"
-        android:layout_width="306dp"
-        android:layout_height="195dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="421dp"
+        android:layout_height="237dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/charge" />
 
-    <!-- Диаграмма доходов -->
     <com.example.fishinbank.IncomePieChartView
         android:id="@+id/incomeChart"
-        android:layout_width="310dp"
-        android:layout_height="211dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="422dp"
+        android:layout_height="254dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/expenseChart" />
 
-    <!-- Остальные элементы вашего макета остаются без изменений -->
     <ImageButton
         android:id="@+id/author"
         android:layout_width="66dp"
         android:layout_height="60dp"
+        android:background="#365006"
         android:onClick="author"
         android:outlineAmbientShadowColor="#F44336"
         android:outlineSpotShadowColor="#F44336"
@@ -75,6 +83,7 @@
         android:id="@+id/purpose"
         android:layout_width="66dp"
         android:layout_height="60dp"
+        android:background="#365006"
         android:onClick="purpose"
         android:outlineAmbientShadowColor="#F44336"
         android:outlineSpotShadowColor="#F44336"
@@ -90,6 +99,7 @@
         android:id="@+id/plus"
         android:layout_width="66dp"
         android:layout_height="60dp"
+        android:background="#365006"
         android:onClick="add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -141,5 +151,38 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.971" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="162dp"
+        android:layout_height="56dp"
+        android:background="#365006"
+        android:gravity="center"
+        android:text="Доход:"
+        android:textColor="#FFEB3B"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.064"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.066" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="162dp"
+        android:layout_height="56dp"
+        android:background="#365006"
+        android:gravity="center"
+        android:text="Расход:"
+        android:textColor="#FFEB3B"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.064"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.161" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

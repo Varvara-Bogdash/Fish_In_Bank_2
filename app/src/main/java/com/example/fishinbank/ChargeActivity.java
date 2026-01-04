@@ -20,7 +20,7 @@ public class ChargeActivity extends AppCompatActivity {
         setupButton(R.id.travel, "Путешествия");
         setupButton(R.id.lunch, "Обеды");
         setupButton(R.id.school, "Образование");
-        setupButton(R.id.myself, "Личные расходы");
+        setupButton(R.id.myself, "Красота");
         setupButton(R.id.house, "Жилье");
         setupButton(R.id.shop, "Шоппинг");
         setupButton(R.id.notControl, "Другие расходы");

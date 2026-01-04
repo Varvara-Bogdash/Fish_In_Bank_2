@@ -1,6 +1,5 @@
 package com.example.fishinbank;
 
-
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -69,37 +68,50 @@ public class PurposeActivity extends AppCompatActivity {
         allCountText.setFreezesText(true);
         countText.setFreezesText(true);
         saveClass = new SaveClass();
-        cupImage.setImageResource(R.drawable.cup);
 
         allCountText.setText("Желаемая сумма: 0");
         countText.setText("Накоплено: 0");
+
+        // Устанавливаем начальное изображение
+        updateCupImage();
     }
 
     private void updateCupImage() {
-        if (count >= allCount && allCount > 0) {
-            cupImage.setImageResource(R.drawable.cup_all);
-            countOfClick = 0;
+        if (allCount > 0) {
+            // Используем double для правильного расчета процентов
+            double progress = (double) count / (double) allCount;
 
-            // Показываем поздравление, если еще не показывали
-            if (!congratulationShown) {
-                showCongratulationsDialog();
-                congratulationShown = true;
+            if (count >= allCount) {
+                cupImage.setImageResource(R.drawable.cup_all);
+                countOfClick = 0;
+
+                // Показываем поздравление, если еще не показывали
+                if (!congratulationShown) {
+                    showCongratulationsDialog();
+                    congratulationShown = true;
+                }
+            } else {
+                // Сбрасываем флаг, если счет стал меньше цели
+                if (congratulationShown) {
+                    congratulationShown = false;
+                }
+                if(progress < 0.1){
+                    cupImage.setImageResource(R.drawable.cup);
+                } else if (progress < 0.25 && progress > 0.1) {
+                    cupImage.setImageResource(R.drawable.cup_add);
+                } else if (progress < 0.5) {
+                    cupImage.setImageResource(R.drawable.cup_one_quarter);
+                } else if (progress < 0.75) {
+                    cupImage.setImageResource(R.drawable.cup_half);
+                } else {
+                    cupImage.setImageResource(R.drawable.cup_three_quarter);
+                }
             }
         } else {
-            // Сбрасываем флаг, если счет стал меньше цели
-            if (congratulationShown && count < allCount) {
-                congratulationShown = false;
-            }
-
-            if (countOfClick <= 5) {
-                cupImage.setImageResource(R.drawable.cup_add);
-            } else if (countOfClick <= 10) {
-                cupImage.setImageResource(R.drawable.cup_one_quarter);
-            } else if (countOfClick <= 15) {
-                cupImage.setImageResource(R.drawable.cup_half);
-            } else {
-                cupImage.setImageResource(R.drawable.cup_three_quarter);
-            }
+            // Если цель не установлена (allCount = 0), показываем начальное изображение
+            cupImage.setImageResource(R.drawable.cup_add);
+            // Сбрасываем флаг поздравления
+            congratulationShown = false;
         }
     }
 

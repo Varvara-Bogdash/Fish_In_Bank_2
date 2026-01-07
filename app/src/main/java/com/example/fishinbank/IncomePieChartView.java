@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import java.text.DecimalFormat;
 import java.util.Map;
@@ -28,6 +29,7 @@ public class IncomePieChartView extends View {
             Color.rgb(220, 100, 120)   // Темный розовый 2
     };
     private DecimalFormat df = new DecimalFormat("#.#");
+    private float scaleFactor = 1.0f; // Коэффициент масштабирования для адаптации
 
     public IncomePieChartView(Context context) {
         super(context);
@@ -87,11 +89,19 @@ public class IncomePieChartView extends View {
             return;
         }
 
-        // Рисуем диаграмму
-        float startAngle = 0f;
-        int colorIndex = 0;
-        float chartSize = Math.min(getWidth(), getHeight()) * 0.45f;
-        float centerX = getWidth() / 2f;
+        // Рассчитываем масштабный коэффициент на основе размера легенды
+        calculateScaleFactor();
+
+        // Применяем масштабирование к размерам шрифтов
+        float currentLegendTextSize = 40f * scaleFactor;
+        legendPaint.setTextSize(currentLegendTextSize);
+
+        // Рисуем легенду слева и получаем ее ширину
+        float legendWidth = drawLegendLeft(canvas, totalIncomes);
+
+        // Увеличиваем диаграмму - изменен коэффициент с 0.55f на 0.65f
+        float chartSize = Math.min(getWidth() - legendWidth, getHeight()) * 0.65f * scaleFactor;
+        float centerX = legendWidth + (getWidth() - legendWidth) / 2f + 30f; // Смещение диаграммы вправо
         float centerY = getHeight() / 4f;
 
         RectF rect = new RectF(
@@ -100,6 +110,113 @@ public class IncomePieChartView extends View {
                 centerX + chartSize/2,
                 centerY + chartSize/2
         );
+
+        // Рисуем сегменты диаграммы
+        drawPieChart(canvas, totalIncomes, rect, centerX, centerY, chartSize);
+
+        // Заголовок диаграммы
+        canvas.drawText("Доходы по категориям", getWidth() / 2f, getHeight() - 80f, titlePaint);
+    }
+
+    private void calculateScaleFactor() {
+        if (DataManager.incomesByCategory == null) return;
+
+        int itemCount = DataManager.incomesByCategory.size();
+        float maxHeight = getHeight() * 0.8f; // Максимальная доступная высота
+        float lineHeight = 55f; // Базовая высота строки
+
+        // Рассчитываем необходимую высоту для легенды
+        float neededHeight = itemCount * lineHeight;
+
+        // Если легенда слишком большая, уменьшаем масштаб
+        if (neededHeight > maxHeight) {
+            scaleFactor = maxHeight / neededHeight;
+            // Ограничиваем минимальный масштаб - увеличено с 0.6f до 0.7f
+            scaleFactor = Math.max(scaleFactor, 0.7f);
+        } else {
+            scaleFactor = 1.0f;
+        }
+
+        // Также проверяем ширину
+        float maxWidth = getWidth() * 0.4f; // Максимальная ширина для легенды
+        if (maxWidth < getWidth() * 0.3f) {
+            scaleFactor = Math.min(scaleFactor, 0.8f);
+        }
+    }
+
+    private float drawLegendLeft(Canvas canvas, double totalIncomes) {
+        if (DataManager.incomesByCategory == null || DataManager.incomesByCategory.isEmpty()) {
+            return 0;
+        }
+
+        float legendX = 20f;
+        float legendY = 40f;
+        float rectSize = 35f * scaleFactor;
+        float textOffset = 50f * scaleFactor;
+        float lineHeight = 55f * scaleFactor;
+
+        // Рассчитываем максимальную ширину текста в легенде
+        float maxTextWidth = 0;
+        float currentLegendTextSize = legendPaint.getTextSize();
+
+        for (Map.Entry<String, Double> entry : DataManager.incomesByCategory.entrySet()) {
+            String category = entry.getKey();
+            double value = entry.getValue();
+            double percentage = (value / totalIncomes) * 100;
+            String legendText = category + " (" + df.format(percentage) + "%)";
+            float textWidth = legendPaint.measureText(legendText);
+            maxTextWidth = Math.max(maxTextWidth, textWidth);
+        }
+
+        // Ширина легенды = отступ + размер прямоугольника + отступ текста + ширина текста
+        // Увеличено с 20f до 40f для более широкого отступа
+        float legendWidth = legendX + rectSize + textOffset + maxTextWidth + 40f;
+
+        // Увеличиваем доступную ширину для текста до 45% ширины экрана
+        float maxAllowedLegendWidth = getWidth() * 0.45f;
+        if (legendWidth > maxAllowedLegendWidth) {
+            // Если легенда слишком широкая, уменьшаем масштаб для ширины
+            float widthScale = maxAllowedLegendWidth / legendWidth;
+            scaleFactor = Math.min(scaleFactor, widthScale);
+
+            // Пересчитываем размеры с новым scaleFactor
+            currentLegendTextSize = 40f * scaleFactor;
+            legendPaint.setTextSize(currentLegendTextSize);
+            rectSize = 35f * scaleFactor;
+            textOffset = 50f * scaleFactor;
+            lineHeight = 55f * scaleFactor;
+            legendWidth = legendX + rectSize + textOffset + maxTextWidth * scaleFactor + 40f;
+        }
+
+        int colorIndex = 0;
+
+        for (Map.Entry<String, Double> entry : DataManager.incomesByCategory.entrySet()) {
+            String category = entry.getKey();
+            double value = entry.getValue();
+            double percentage = (value / totalIncomes) * 100;
+
+            // Цветной прямоугольник
+            paint.setColor(colors[colorIndex % colors.length]);
+            canvas.drawRect(legendX, legendY, legendX + rectSize, legendY + rectSize, paint);
+
+            // Текст категории и процента - теперь всегда полный текст
+            String legendText = category + " (" + df.format(percentage) + "%)";
+
+            // Убрано обрезание текста - теперь всегда отображается полное название
+            canvas.drawText(legendText, legendX + textOffset,
+                    legendY + rectSize/2 + currentLegendTextSize/3, legendPaint);
+
+            legendY += lineHeight;
+            colorIndex++;
+        }
+
+        return legendWidth;
+    }
+
+    private void drawPieChart(Canvas canvas, double totalIncomes, RectF rect,
+                              float centerX, float centerY, float chartSize) {
+        float startAngle = 0f;
+        int colorIndex = 0;
 
         // Рисуем сегменты диаграммы
         for (Map.Entry<String, Double> entry : DataManager.incomesByCategory.entrySet()) {
@@ -127,71 +244,6 @@ public class IncomePieChartView extends View {
             startAngle += sweepAngle;
             colorIndex++;
         }
-
-        // Рисуем легенду
-        drawLegend(canvas, totalIncomes, centerY + chartSize/2 + 30f);
-
-        // Заголовок диаграммы перенесен вниз
-        canvas.drawText("Доходы по категориям", centerX, getHeight() - 80f, titlePaint);
-    }
-
-    private void drawLegend(Canvas canvas, double totalIncomes, float startY) {
-        float legendX = 40f;
-        float legendY = startY;
-        float rectSize = 35f;
-        float textOffset = 50f;
-        float lineHeight = 55f;
-        int maxWidth = getWidth() - 100;
-
-        int colorIndex = 0;
-        int maxItems = DataManager.incomesByCategory.size();
-
-        // Вычисляем, сколько колонок потребуется
-        int columns = 1;
-        float availableHeight = getHeight() - startY - 150f;
-        float neededHeight = maxItems * lineHeight;
-
-        if (neededHeight > availableHeight && maxItems > 0) {
-            columns = (int) Math.ceil(neededHeight / availableHeight);
-        }
-
-        float columnWidth = (maxWidth + 40f) / columns;
-        int itemsPerColumn = (int) Math.ceil((float) maxItems / columns);
-
-        float currentColumnX = legendX;
-        int currentItemInColumn = 0;
-
-        for (Map.Entry<String, Double> entry : DataManager.incomesByCategory.entrySet()) {
-            String category = entry.getKey();
-            double value = entry.getValue();
-            double percentage = (value / totalIncomes) * 100;
-
-            // Переходим на новую колонку при необходимости
-            if (currentItemInColumn >= itemsPerColumn) {
-                currentColumnX += columnWidth;
-                legendY = startY;
-                currentItemInColumn = 0;
-            }
-
-            // Цветной прямоугольник
-            paint.setColor(colors[colorIndex % colors.length]);
-            canvas.drawRect(currentColumnX, legendY, currentColumnX + rectSize, legendY + rectSize, paint);
-
-            // Текст категории и процента
-            String legendText = category + " (" + df.format(percentage) + "%)";
-
-            // Обрезаем текст если слишком длинный
-            float availableTextWidth = columnWidth - rectSize - textOffset - 10f;
-            if (legendPaint.measureText(legendText) > availableTextWidth) {
-                legendText = shortenText(legendPaint, legendText, availableTextWidth);
-            }
-
-            canvas.drawText(legendText, currentColumnX + textOffset, legendY + 22f, legendPaint);
-
-            legendY += lineHeight;
-            colorIndex++;
-            currentItemInColumn++;
-        }
     }
 
     private String shortenText(Paint paint, String text, float maxWidth) {
@@ -210,7 +262,8 @@ public class IncomePieChartView extends View {
     private void drawEmptyChart(Canvas canvas) {
         float centerX = getWidth() / 2f;
         float centerY = getHeight() / 3f;
-        float chartSize = Math.min(getWidth(), getHeight()) * 0.45f;
+        // Увеличена диаграмма при отсутствии данных с 0.5f до 0.6f
+        float chartSize = Math.min(getWidth(), getHeight()) * 0.6f;
 
         paint.setColor(Color.LTGRAY);
         paint.setStyle(Paint.Style.STROKE);
@@ -232,7 +285,7 @@ public class IncomePieChartView extends View {
         emptyTextPaint.setTextAlign(Paint.Align.CENTER);
         canvas.drawText("Нет данных о доходах", centerX, centerY, emptyTextPaint);
 
-        // Заголовок перенесен вниз
+        // Заголовок
         canvas.drawText("Доходы по категориям", centerX, getHeight() - 80f, titlePaint);
     }
 }

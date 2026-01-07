@@ -16,8 +16,8 @@ import android.widget.TextView;
 public class PurposeActivity extends AppCompatActivity {
     TextView allCountText;
     TextView countText;
-    String allMoney = "0";
-    String money = "0";
+    String baseAllMoney = "0"; // Базовое значение цели (из AddPurposeActivity)
+    String baseMoney = "0";     // Базовое значение накопления (из AddPurposeActivity)
     SaveClass saveClass;
     int plusCount = 0;
     int plusAllCount = 0;
@@ -41,15 +41,25 @@ public class PurposeActivity extends AppCompatActivity {
                         String newMoney = data.getStringExtra("money");
 
                         if (newAllMoney != null && !newAllMoney.isEmpty()) {
-                            allMoney = newAllMoney;
-                            allCount = Integer.parseInt(allMoney);
+                            baseAllMoney = newAllMoney;
+                            allCount = Integer.parseInt(baseAllMoney) + plusAllCount + minusAllCount;
                             allCountText.setText("Желаемая сумма: " + allCount);
                             congratulationShown = false;
+
+                            // Сохраняем в SaveClass
+                            if (saveClass != null) {
+                                saveClass.saveBaseAllMoney(baseAllMoney);
+                            }
                         }
                         if (newMoney != null && !newMoney.isEmpty()) {
-                            money = newMoney;
-                            count = Integer.parseInt(money);
+                            baseMoney = newMoney;
+                            count = Integer.parseInt(baseMoney) + plusCount + minusCount;
                             countText.setText("Накоплено: " + count);
+
+                            // Сохраняем в SaveClass
+                            if (saveClass != null) {
+                                saveClass.saveBaseMoney(baseMoney);
+                            }
                         }
 
                         updateCupImage();
@@ -67,13 +77,60 @@ public class PurposeActivity extends AppCompatActivity {
         cupImage = findViewById(R.id.cupImage);
         allCountText.setFreezesText(true);
         countText.setFreezesText(true);
-        saveClass = new SaveClass();
+        saveClass = SaveClass.getInstance(this);
 
-        allCountText.setText("Желаемая сумма: 0");
-        countText.setText("Накоплено: 0");
+        // Загружаем сохраненные данные
+        loadSavedData();
+
+        // Пересчитываем итоговые значения
+        allCount = Integer.parseInt(baseAllMoney) + plusAllCount + minusAllCount;
+        count = Integer.parseInt(baseMoney) + plusCount + minusCount;
+
+        allCountText.setText("Желаемая сумма: " + allCount);
+        countText.setText("Накоплено: " + count);
 
         // Устанавливаем начальное изображение
         updateCupImage();
+    }
+
+    private void loadSavedData() {
+        if (saveClass != null) {
+            // Загружаем базовые значения
+            baseAllMoney = saveClass.getBaseAllMoney();
+            baseMoney = saveClass.getBaseMoney();
+
+            // Загружаем счетчики изменений
+            plusCount = saveClass.getPlusCount();
+            minusCount = saveClass.getMinusCount();
+            plusAllCount = saveClass.getPlusAllCount();
+            minusAllCount = saveClass.getMinusAllCount();
+
+            // Проверяем на null и устанавливаем значения по умолчанию
+            if (baseAllMoney == null || baseAllMoney.isEmpty()) {
+                baseAllMoney = "0";
+            }
+            if (baseMoney == null || baseMoney.isEmpty()) {
+                baseMoney = "0";
+            }
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Сохраняем данные при уходе с экрана
+        saveData();
+    }
+
+    private void saveData() {
+        if (saveClass != null) {
+            saveClass.saveBaseAllMoney(baseAllMoney);
+            saveClass.saveBaseMoney(baseMoney);
+            saveClass.savePlusCount(plusCount);
+            saveClass.saveMinusCount(minusCount);
+            saveClass.savePlusAllCount(plusAllCount);
+            saveClass.saveMinusAllCount(minusAllCount);
+        }
     }
 
     private void updateCupImage() {
@@ -109,7 +166,7 @@ public class PurposeActivity extends AppCompatActivity {
             }
         } else {
             // Если цель не установлена (allCount = 0), показываем начальное изображение
-            cupImage.setImageResource(R.drawable.cup_add);
+            cupImage.setImageResource(R.drawable.cup);
             // Сбрасываем флаг поздравления
             congratulationShown = false;
         }
@@ -134,31 +191,37 @@ public class PurposeActivity extends AppCompatActivity {
     }
 
     public void home(View view) {
+        saveData();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
     public void author(View view) {
+        saveData();
         Intent intent = new Intent(this, AuthorClass.class);
         startActivity(intent);
     }
 
     public void wallet(View view) {
+        saveData();
         Intent intent = new Intent(this, ChargeActivity.class);
         startActivity(intent);
     }
 
     public void minusCount(View view) {
-        minusCount -= 500;
-        count = plusCount + minusCount + Integer.parseInt(money);
-        countText.setText("Накоплено: " + count);
-        countOfClick++;
-        updateCupImage();
+        int newCount = Integer.parseInt(baseMoney) + plusCount + minusCount - 500;
+        if (newCount >= 0) {
+            minusCount -= 500;
+            count = newCount;
+            countText.setText("Накоплено: " + count);
+            countOfClick++;
+            updateCupImage();
+        }
     }
 
     public void plusCount(View view) {
         plusCount += 1000;
-        count = plusCount + minusCount + Integer.parseInt(money);
+        count = Integer.parseInt(baseMoney) + plusCount + minusCount;
         countText.setText("Накоплено: " + count);
         countOfClick++;
         updateCupImage();
@@ -166,17 +229,20 @@ public class PurposeActivity extends AppCompatActivity {
 
     public void plusAllCount(View view) {
         plusAllCount += 1000;
-        allCount = plusAllCount + minusAllCount + Integer.parseInt(allMoney);
+        allCount = Integer.parseInt(baseAllMoney) + plusAllCount + minusAllCount;
         allCountText.setText("Желаемая сумма: " + allCount);
         congratulationShown = false;
         updateCupImage();
     }
 
     public void minusAllCount(View view) {
-        minusAllCount -= 500;
-        allCount = plusAllCount + minusAllCount + Integer.parseInt(allMoney);
-        allCountText.setText("Желаемая сумма: " + allCount);
-        congratulationShown = false;
-        updateCupImage();
+        int newAllCount = Integer.parseInt(baseAllMoney) + plusAllCount + minusAllCount - 500;
+        if (newAllCount >= 0) {
+            minusAllCount -= 500;
+            allCount = newAllCount;
+            allCountText.setText("Желаемая сумма: " + allCount);
+            congratulationShown = false;
+            updateCupImage();
+        }
     }
 }

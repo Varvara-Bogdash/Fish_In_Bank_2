@@ -45,7 +45,7 @@
 
     <com.example.fishinbank.PieChartView
         android:id="@+id/expenseChart"
-        android:layout_width="421dp"
+        android:layout_width="400dp"
         android:layout_height="237dp"
         android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -183,6 +183,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.161" />
+
+    <ImageButton
+        android:id="@+id/delete"
+        android:layout_width="275dp"
+        android:layout_height="64dp"
+        android:backgroundTint="#365006"
+        android:onClick="resetAllData"
+        android:tint="#FFE500"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.853"
+        app:srcCompat="@android:drawable/ic_menu_delete"
+        tools:ignore="UseAppTint" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

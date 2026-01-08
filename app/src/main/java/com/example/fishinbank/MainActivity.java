@@ -218,8 +218,19 @@ public class MainActivity extends AppCompatActivity {
      * Метод для сброса всех данных (для тестирования)
      */
     public void resetAllData(View view) {
-        if (chartStateManager != null) {
-            chartStateManager.clearAllData();
+        // Просто сбрасываем отображение
+        incomeTextView.setText("0.00 руб.");
+        chargeTextView.setText("0.00 руб.");
+
+        // Сбрасываем диаграммы
+        if (expenseChart != null) {
+            expenseChart.setData(new float[0]);
+            expenseChart.invalidate();
+        }
+
+        if (incomeChart != null) {
+            incomeChart.setData(new float[0]);
+            incomeChart.invalidate();
         }
         DataManager.resetData();
         updateDisplay();
@@ -238,4 +249,5 @@ public class MainActivity extends AppCompatActivity {
             refreshCharts();
         }
     }
+
 }

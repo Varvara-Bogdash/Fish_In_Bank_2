@@ -18,6 +18,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 public class PurposeActivity extends AppCompatActivity {
+    TextView remainCountText;
     TextView allCountText;
     TextView countText;
     String baseAllMoney = "0"; // Базовое значение цели (из AddPurposeActivity)
@@ -69,6 +70,7 @@ public class PurposeActivity extends AppCompatActivity {
                             }
                         }
 
+                        updateRemainCountText(); // Добавлено: обновляем остаток
                         updateCupImage();
                     }
                 }
@@ -78,7 +80,7 @@ public class PurposeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_purpose);
-
+        remainCountText = findViewById(R.id.remainCountText);
         allCountText = findViewById(R.id.allCountText);
         countText = findViewById(R.id.cointText);
         cupImage = findViewById(R.id.cupImage);
@@ -98,6 +100,7 @@ public class PurposeActivity extends AppCompatActivity {
 
         allCountText.setText("Желаемая сумма: " + formatNumberWithSpaces(allCount));
         countText.setText("Накоплено: " + formatNumberWithSpaces(count));
+        updateRemainCountText(); // Добавлено: обновляем остаток при создании
 
         // Устанавливаем начальное изображение
         updateCupImage();
@@ -155,6 +158,15 @@ public class PurposeActivity extends AppCompatActivity {
         }
     }
 
+    // Добавлено: метод для обновления текста с оставшейся суммой
+    private void updateRemainCountText() {
+        int remaining = allCount - count;
+        if (remaining < 0) {
+            remaining = 0;
+        }
+        remainCountText.setText("Осталось накопить: " + formatNumberWithSpaces(remaining));
+    }
+
     private void updateCupImage() {
         if (allCount > 0) {
             // Используем double для правильного расчета процентов
@@ -192,6 +204,8 @@ public class PurposeActivity extends AppCompatActivity {
             // Сбрасываем флаг поздравления
             congratulationShown = false;
         }
+
+        updateRemainCountText(); // Добавлено: обновляем остаток при изменении изображения
     }
 
     private void showCongratulationsDialog() {
@@ -237,6 +251,7 @@ public class PurposeActivity extends AppCompatActivity {
             count = newCount;
             countText.setText("Накоплено: " + formatNumberWithSpaces(count));
             countOfClick++;
+            updateRemainCountText(); // Добавлено: обновляем остаток
             updateCupImage();
         }
     }
@@ -246,6 +261,7 @@ public class PurposeActivity extends AppCompatActivity {
         count = Integer.parseInt(baseMoney) + plusCount + minusCount;
         countText.setText("Накоплено: " + formatNumberWithSpaces(count));
         countOfClick++;
+        updateRemainCountText(); // Добавлено: обновляем остаток
         updateCupImage();
     }
 
@@ -254,6 +270,7 @@ public class PurposeActivity extends AppCompatActivity {
         allCount = Integer.parseInt(baseAllMoney) + plusAllCount + minusAllCount;
         allCountText.setText("Желаемая сумма: " + formatNumberWithSpaces(allCount));
         congratulationShown = false;
+        updateRemainCountText(); // Добавлено: обновляем остаток
         updateCupImage();
     }
 
@@ -264,7 +281,35 @@ public class PurposeActivity extends AppCompatActivity {
             allCount = newAllCount;
             allCountText.setText("Желаемая сумма: " + formatNumberWithSpaces(allCount));
             congratulationShown = false;
+            updateRemainCountText(); // Добавлено: обновляем остаток
             updateCupImage();
+        }
+    }
+
+    public void deletePurpose(View view) {
+        baseAllMoney = "0";
+        baseMoney = "0";
+        plusCount = 0;
+        minusCount = 0;
+        plusAllCount = 0;
+        minusAllCount = 0;
+        count = 0;
+        allCount = 0;
+        countOfClick = 0;
+        congratulationShown = false;
+        allCountText.setText("Желаемая сумма: " + formatNumberWithSpaces(allCount));
+        countText.setText("Накоплено: " + formatNumberWithSpaces(count));
+        updateRemainCountText(); // Добавлено: обновляем остаток
+
+        cupImage.setImageResource(R.drawable.cup);
+
+        if (saveClass != null) {
+            saveClass.saveBaseAllMoney(baseAllMoney);
+            saveClass.saveBaseMoney(baseMoney);
+            saveClass.savePlusCount(plusCount);
+            saveClass.saveMinusCount(minusCount);
+            saveClass.savePlusAllCount(plusAllCount);
+            saveClass.saveMinusAllCount(minusAllCount);
         }
     }
 }

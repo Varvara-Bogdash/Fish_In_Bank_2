@@ -55,8 +55,8 @@
 
     <com.example.fishinbank.IncomePieChartView
         android:id="@+id/incomeChart"
-        android:layout_width="422dp"
-        android:layout_height="254dp"
+        android:layout_width="380dp"
+        android:layout_height="233dp"
         android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

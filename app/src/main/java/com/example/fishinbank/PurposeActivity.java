@@ -13,6 +13,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+
 public class PurposeActivity extends AppCompatActivity {
     TextView allCountText;
     TextView countText;
@@ -27,6 +31,9 @@ public class PurposeActivity extends AppCompatActivity {
     int allCount = 0;
     ImageView cupImage;
     int countOfClick = 0;
+
+    // Форматтер для чисел с разделителями разрядов
+    private DecimalFormat decimalFormat;
 
     private boolean congratulationShown = false;
 
@@ -43,7 +50,7 @@ public class PurposeActivity extends AppCompatActivity {
                         if (newAllMoney != null && !newAllMoney.isEmpty()) {
                             baseAllMoney = newAllMoney;
                             allCount = Integer.parseInt(baseAllMoney) + plusAllCount + minusAllCount;
-                            allCountText.setText("Желаемая сумма: " + allCount);
+                            allCountText.setText("Желаемая сумма: " + formatNumberWithSpaces(allCount));
                             congratulationShown = false;
 
                             // Сохраняем в SaveClass
@@ -54,7 +61,7 @@ public class PurposeActivity extends AppCompatActivity {
                         if (newMoney != null && !newMoney.isEmpty()) {
                             baseMoney = newMoney;
                             count = Integer.parseInt(baseMoney) + plusCount + minusCount;
-                            countText.setText("Накоплено: " + count);
+                            countText.setText("Накоплено: " + formatNumberWithSpaces(count));
 
                             // Сохраняем в SaveClass
                             if (saveClass != null) {
@@ -79,6 +86,9 @@ public class PurposeActivity extends AppCompatActivity {
         countText.setFreezesText(true);
         saveClass = SaveClass.getInstance(this);
 
+        // Инициализация форматтера
+        initNumberFormatter();
+
         // Загружаем сохраненные данные
         loadSavedData();
 
@@ -86,11 +96,23 @@ public class PurposeActivity extends AppCompatActivity {
         allCount = Integer.parseInt(baseAllMoney) + plusAllCount + minusAllCount;
         count = Integer.parseInt(baseMoney) + plusCount + minusCount;
 
-        allCountText.setText("Желаемая сумма: " + allCount);
-        countText.setText("Накоплено: " + count);
+        allCountText.setText("Желаемая сумма: " + formatNumberWithSpaces(allCount));
+        countText.setText("Накоплено: " + formatNumberWithSpaces(count));
 
         // Устанавливаем начальное изображение
         updateCupImage();
+    }
+
+    private void initNumberFormatter() {
+        // Создаем DecimalFormat с разделителями групп (тысяч)
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
+        symbols.setGroupingSeparator(' '); // Устанавливаем пробел в качестве разделителя
+        decimalFormat = new DecimalFormat("#,###", symbols);
+        decimalFormat.setGroupingSize(3); // Группировка по 3 цифры
+    }
+
+    private String formatNumberWithSpaces(int number) {
+        return decimalFormat.format(number);
     }
 
     private void loadSavedData() {
@@ -176,7 +198,7 @@ public class PurposeActivity extends AppCompatActivity {
         // Используем простой AlertDialog без кастомного layout
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("🎉 Поздравляем!");
-        builder.setMessage("Вы достигли своей цели!\nВы накопили " + count + " из " + allCount);
+        builder.setMessage("Вы достигли своей цели!\nВы накопили " + formatNumberWithSpaces(count) + " из " + formatNumberWithSpaces(allCount));
         builder.setPositiveButton("Ура!", (dialog, which) -> {
             dialog.dismiss();
         });
@@ -213,7 +235,7 @@ public class PurposeActivity extends AppCompatActivity {
         if (newCount >= 0) {
             minusCount -= 500;
             count = newCount;
-            countText.setText("Накоплено: " + count);
+            countText.setText("Накоплено: " + formatNumberWithSpaces(count));
             countOfClick++;
             updateCupImage();
         }
@@ -222,7 +244,7 @@ public class PurposeActivity extends AppCompatActivity {
     public void plusCount(View view) {
         plusCount += 1000;
         count = Integer.parseInt(baseMoney) + plusCount + minusCount;
-        countText.setText("Накоплено: " + count);
+        countText.setText("Накоплено: " + formatNumberWithSpaces(count));
         countOfClick++;
         updateCupImage();
     }
@@ -230,7 +252,7 @@ public class PurposeActivity extends AppCompatActivity {
     public void plusAllCount(View view) {
         plusAllCount += 1000;
         allCount = Integer.parseInt(baseAllMoney) + plusAllCount + minusAllCount;
-        allCountText.setText("Желаемая сумма: " + allCount);
+        allCountText.setText("Желаемая сумма: " + formatNumberWithSpaces(allCount));
         congratulationShown = false;
         updateCupImage();
     }
@@ -240,7 +262,7 @@ public class PurposeActivity extends AppCompatActivity {
         if (newAllCount >= 0) {
             minusAllCount -= 500;
             allCount = newAllCount;
-            allCountText.setText("Желаемая сумма: " + allCount);
+            allCountText.setText("Желаемая сумма: " + formatNumberWithSpaces(allCount));
             congratulationShown = false;
             updateCupImage();
         }

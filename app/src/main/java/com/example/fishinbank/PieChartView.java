@@ -41,6 +41,11 @@ public class PieChartView extends View {
     private float scaleFactor = 1.0f; // Коэффициент масштабирования для адаптации
     private float chartSize = 0; // Храним размер диаграммы
 
+    // Поля для хранения данных диаграммы
+    private float[] values = new float[0];
+    private String[] categoryNames = new String[0];
+    private boolean useExternalData = false; // Флаг использования внешних данных
+
     public PieChartView(Context context) {
         super(context);
         init();
@@ -85,35 +90,46 @@ public class PieChartView extends View {
         super.onDraw(canvas);
 
         // Рассчитываем размер диаграммы один раз, чтобы он был одинаковым
-        chartSize = Math.min(getWidth(), getHeight()) * 0.45f;
+        chartSize = Math.min(getWidth(), getHeight()) * 0.55f;
 
-        if (DataManager.expensesByCategory == null || DataManager.expensesByCategory.isEmpty()) {
-            drawEmptyChart(canvas);
-            return;
+        // Выбираем источник данных в зависимости от флага
+        boolean isEmpty;
+        double totalExpenses;
+        Map<String, Double> dataMap;
+
+        if (useExternalData && values.length > 0) {
+            // Используем внешние данные
+            isEmpty = values.length == 0;
+            totalExpenses = calculateTotal(values);
+            dataMap = convertToMap();
+        } else {
+            // Используем данные из DataManager
+            if (DataManager.expensesByCategory == null || DataManager.expensesByCategory.isEmpty()) {
+                drawEmptyChart(canvas);
+                return;
+            }
+            isEmpty = DataManager.expensesByCategory.isEmpty();
+            totalExpenses = DataManager.totalExpense;
+            dataMap = DataManager.expensesByCategory;
         }
 
-        double totalExpenses = 0.0;
-        for (double value : DataManager.expensesByCategory.values()) {
-            totalExpenses += value;
-        }
-
-        if (totalExpenses == 0.0) {
+        if (isEmpty || totalExpenses == 0.0) {
             drawEmptyChart(canvas);
             return;
         }
 
         // Рассчитываем масштабный коэффициент на основе размера легенды
-        calculateScaleFactor();
+        calculateScaleFactor(dataMap);
 
         // Применяем масштабирование к размерам шрифтов
         float currentLegendTextSize = 40f * scaleFactor;
         legendPaint.setTextSize(currentLegendTextSize);
 
         // Рисуем легенду слева и получаем ее ширину
-        float legendWidth = drawLegendLeft(canvas, totalExpenses);
+        float legendWidth = drawLegendLeft(canvas, totalExpenses, dataMap);
 
         // Используем фиксированный размер диаграммы (такой же как в пустой)
-        float centerX = legendWidth + (getWidth() - legendWidth) / 2f + 30f; // Смещение диаграммы вправо
+        float centerX = legendWidth + (getWidth() - legendWidth) / 2f + 70f; // Смещение диаграммы вправо
         float centerY = getHeight() / 3f; // Смещаем диаграмму ниже
 
         RectF rect = new RectF(
@@ -124,16 +140,76 @@ public class PieChartView extends View {
         );
 
         // Рисуем сегменты диаграммы
-        drawPieChart(canvas, totalExpenses, rect, centerX, centerY, chartSize);
+        drawPieChart(canvas, totalExpenses, rect, centerX, centerY, chartSize, dataMap);
 
         // Заголовок диаграммы
         canvas.drawText("Расходы по категориям", getWidth() / 2f, getHeight() - 80f, titlePaint);
     }
 
-    private void calculateScaleFactor() {
-        if (DataManager.expensesByCategory == null) return;
+    /**
+     * Устанавливает данные для диаграммы из массива значений
+     */
+    public void setData(float[] values) {
+        if (values == null) {
+            this.values = new float[0];
+        } else {
+            this.values = values.clone();
+        }
+        useExternalData = true;
+        invalidate();
+    }
 
-        int itemCount = DataManager.expensesByCategory.size();
+    /**
+     * Устанавливает названия категорий для диаграммы
+     */
+    public void setCategoryNames(String[] categoryNames) {
+        if (categoryNames == null) {
+            this.categoryNames = new String[0];
+        } else {
+            this.categoryNames = categoryNames.clone();
+        }
+        invalidate();
+    }
+
+    /**
+     * Возвращает текущие данные диаграммы
+     */
+    public float[] getData() {
+        return values.clone();
+    }
+
+    /**
+     * Возвращает текущие названия категорий
+     */
+    public String[] getCategoryNames() {
+        return categoryNames.clone();
+    }
+
+    /**
+     * Очищает данные диаграммы
+     */
+    public void clearData() {
+        values = new float[0];
+        categoryNames = new String[0];
+        useExternalData = false;
+        invalidate();
+    }
+
+    /**
+     * Восстанавливает использование данных из DataManager
+     */
+    public void useDataManager() {
+        useExternalData = false;
+        invalidate();
+    }
+
+    /**
+     * Пересчитывает коэффициент масштабирования на основе данных
+     */
+    private void calculateScaleFactor(Map<String, Double> dataMap) {
+        if (dataMap == null) return;
+
+        int itemCount = dataMap.size();
         float maxHeight = getHeight() * 0.8f; // Максимальная доступная высота
         float lineHeight = 55f; // Базовая высота строки
 
@@ -156,8 +232,11 @@ public class PieChartView extends View {
         }
     }
 
-    private float drawLegendLeft(Canvas canvas, double totalExpenses) {
-        if (DataManager.expensesByCategory == null || DataManager.expensesByCategory.isEmpty()) {
+    /**
+     * Рисует легенду слева
+     */
+    private float drawLegendLeft(Canvas canvas, double totalExpenses, Map<String, Double> dataMap) {
+        if (dataMap == null || dataMap.isEmpty()) {
             return 0;
         }
 
@@ -171,7 +250,7 @@ public class PieChartView extends View {
         float maxTextWidth = 0;
         float currentLegendTextSize = legendPaint.getTextSize();
 
-        for (Map.Entry<String, Double> entry : DataManager.expensesByCategory.entrySet()) {
+        for (Map.Entry<String, Double> entry : dataMap.entrySet()) {
             String category = entry.getKey();
             double value = entry.getValue();
             double percentage = (value / totalExpenses) * 100;
@@ -200,7 +279,7 @@ public class PieChartView extends View {
 
         int colorIndex = 0;
 
-        for (Map.Entry<String, Double> entry : DataManager.expensesByCategory.entrySet()) {
+        for (Map.Entry<String, Double> entry : dataMap.entrySet()) {
             String category = entry.getKey();
             double value = entry.getValue();
             double percentage = (value / totalExpenses) * 100;
@@ -223,13 +302,16 @@ public class PieChartView extends View {
         return legendWidth;
     }
 
+    /**
+     * Рисует круговую диаграмму
+     */
     private void drawPieChart(Canvas canvas, double totalExpenses, RectF rect,
-                              float centerX, float centerY, float chartSize) {
+                              float centerX, float centerY, float chartSize, Map<String, Double> dataMap) {
         float startAngle = 0f;
         int colorIndex = 0;
 
         // Рисуем сегменты диаграммы
-        for (Map.Entry<String, Double> entry : DataManager.expensesByCategory.entrySet()) {
+        for (Map.Entry<String, Double> entry : dataMap.entrySet()) {
             String category = entry.getKey();
             double value = entry.getValue();
             float sweepAngle = (float) (value / totalExpenses * 360);
@@ -256,6 +338,9 @@ public class PieChartView extends View {
         }
     }
 
+    /**
+     * Сокращает текст если он слишком длинный
+     */
     private String shortenText(Paint paint, String text, float maxWidth) {
         if (paint.measureText(text) <= maxWidth) {
             return text;
@@ -269,6 +354,9 @@ public class PieChartView extends View {
         return text.substring(0, endIndex) + "...";
     }
 
+    /**
+     * Рисует пустую диаграмму
+     */
     private void drawEmptyChart(Canvas canvas) {
         float centerX = getWidth() / 2f;
         float centerY = getHeight() / 3f;
@@ -296,5 +384,39 @@ public class PieChartView extends View {
 
         // Заголовок
         canvas.drawText("Расходы по категориям", centerX, getHeight() - 80f, titlePaint);
+    }
+
+    /**
+     * Рассчитывает общую сумму из массива значений
+     */
+    private double calculateTotal(float[] values) {
+        double total = 0.0;
+        for (float value : values) {
+            total += value;
+        }
+        return total;
+    }
+
+    /**
+     * Конвертирует массив значений и названий категорий в Map
+     */
+    private Map<String, Double> convertToMap() {
+        java.util.HashMap<String, Double> map = new java.util.HashMap<>();
+
+        if (values.length == 0) {
+            return map;
+        }
+
+        for (int i = 0; i < values.length; i++) {
+            String categoryName;
+            if (categoryNames.length > i && categoryNames[i] != null && !categoryNames[i].isEmpty()) {
+                categoryName = categoryNames[i];
+            } else {
+                categoryName = "Категория " + (i + 1);
+            }
+            map.put(categoryName, (double) values[i]);
+        }
+
+        return map;
     }
 }

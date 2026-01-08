@@ -97,6 +97,7 @@ public class IncomePieChartView extends View {
         double totalIncomes;
         Map<String, Double> dataMap;
 
+
         if (useExternalData && values.length > 0) {
             isEmpty = values.length == 0;
             totalIncomes = calculateTotal(values);

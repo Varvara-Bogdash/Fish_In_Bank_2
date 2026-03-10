@@ -73,13 +73,15 @@
         android:id="@+id/homeButton"
         android:layout_width="69dp"
         android:layout_height="57dp"
+        android:background="@drawable/roundcorner"
         android:backgroundTint="#3A5606"
         android:onClick="home"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.713"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.934"
+        app:layout_constraintVertical_bias="0.942"
         app:srcCompat="@drawable/baseline_house_24" />
 
     <TextView
@@ -103,15 +105,15 @@
         android:id="@+id/homeText"
         android:layout_width="116dp"
         android:layout_height="32dp"
-        android:text="на главную"
+        android:text="На главную"
         android:textColor="#FFEB3B"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.535"
+        app:layout_constraintHorizontal_bias="0.752"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.977" />
+        app:layout_constraintVertical_bias="0.981" />
 
     <TextView
         android:id="@+id/textView3"
@@ -127,4 +129,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.081" />
+
+    <ImageButton
+        android:id="@+id/setButton"
+        android:layout_width="69dp"
+        android:layout_height="57dp"
+        android:backgroundTint="#3A5606"
+        android:background="@drawable/roundcorner"
+        android:onClick="settings"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.192"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.942"
+        app:srcCompat="@drawable/baseline_app_settings_alt_24" />
+
+    <TextView
+        android:id="@+id/setText"
+        android:layout_width="116dp"
+        android:layout_height="32dp"
+        android:text="Настройки"
+        android:textColor="#FFEB3B"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.155"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.981" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

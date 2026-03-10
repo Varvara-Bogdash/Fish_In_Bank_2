@@ -145,10 +145,6 @@ public class PieChartView extends View {
         // Заголовок диаграммы
         canvas.drawText("Расходы по категориям", getWidth() / 2f, getHeight() - 80f, titlePaint);
     }
-
-    /**
-     * Устанавливает данные для диаграммы из массива значений
-     */
     public void setData(float[] values) {
         if (values == null) {
             this.values = new float[0];
@@ -158,10 +154,6 @@ public class PieChartView extends View {
         useExternalData = true;
         invalidate();
     }
-
-    /**
-     * Устанавливает названия категорий для диаграммы
-     */
     public void setCategoryNames(String[] categoryNames) {
         if (categoryNames == null) {
             this.categoryNames = new String[0];
@@ -170,42 +162,6 @@ public class PieChartView extends View {
         }
         invalidate();
     }
-
-    /**
-     * Возвращает текущие данные диаграммы
-     */
-    public float[] getData() {
-        return values.clone();
-    }
-
-    /**
-     * Возвращает текущие названия категорий
-     */
-    public String[] getCategoryNames() {
-        return categoryNames.clone();
-    }
-
-    /**
-     * Очищает данные диаграммы
-     */
-    public void clearData() {
-        values = new float[0];
-        categoryNames = new String[0];
-        useExternalData = false;
-        invalidate();
-    }
-
-    /**
-     * Восстанавливает использование данных из DataManager
-     */
-    public void useDataManager() {
-        useExternalData = false;
-        invalidate();
-    }
-
-    /**
-     * Пересчитывает коэффициент масштабирования на основе данных
-     */
     private void calculateScaleFactor(Map<String, Double> dataMap) {
         if (dataMap == null) return;
 
@@ -231,10 +187,6 @@ public class PieChartView extends View {
             scaleFactor = Math.min(scaleFactor, 0.8f);
         }
     }
-
-    /**
-     * Рисует легенду слева
-     */
     private float drawLegendLeft(Canvas canvas, double totalExpenses, Map<String, Double> dataMap) {
         if (dataMap == null || dataMap.isEmpty()) {
             return 0;
@@ -301,10 +253,6 @@ public class PieChartView extends View {
 
         return legendWidth;
     }
-
-    /**
-     * Рисует круговую диаграмму
-     */
     private void drawPieChart(Canvas canvas, double totalExpenses, RectF rect,
                               float centerX, float centerY, float chartSize, Map<String, Double> dataMap) {
         float startAngle = 0f;
@@ -337,26 +285,6 @@ public class PieChartView extends View {
             colorIndex++;
         }
     }
-
-    /**
-     * Сокращает текст если он слишком длинный
-     */
-    private String shortenText(Paint paint, String text, float maxWidth) {
-        if (paint.measureText(text) <= maxWidth) {
-            return text;
-        }
-
-        int endIndex = text.length() - 1;
-        while (endIndex > 3 && paint.measureText(text.substring(0, endIndex) + "...") > maxWidth) {
-            endIndex--;
-        }
-
-        return text.substring(0, endIndex) + "...";
-    }
-
-    /**
-     * Рисует пустую диаграмму
-     */
     private void drawEmptyChart(Canvas canvas) {
         float centerX = getWidth() / 2f;
         float centerY = getHeight() / 3f;
@@ -385,10 +313,6 @@ public class PieChartView extends View {
         // Заголовок
         canvas.drawText("Расходы по категориям", centerX, getHeight() - 80f, titlePaint);
     }
-
-    /**
-     * Рассчитывает общую сумму из массива значений
-     */
     private double calculateTotal(float[] values) {
         double total = 0.0;
         for (float value : values) {
@@ -396,10 +320,6 @@ public class PieChartView extends View {
         }
         return total;
     }
-
-    /**
-     * Конвертирует массив значений и названий категорий в Map
-     */
     private Map<String, Double> convertToMap() {
         java.util.HashMap<String, Double> map = new java.util.HashMap<>();
 

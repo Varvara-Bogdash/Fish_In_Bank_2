@@ -36,11 +36,11 @@
 
     <Button
         android:id="@+id/btn_add"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
+        android:layout_width="152dp"
+        android:layout_height="68dp"
         android:layout_marginTop="32dp"
         android:backgroundTint="#FEEA3B"
-        android:text="Добавить"
+        android:text="Добавить доход"
         android:textColor="#365006"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"

@@ -13,6 +13,7 @@
         android:layout_height="60dp"
         android:backgroundTint="#3A5606"
         android:onClick="house"
+        android:background="@drawable/roundcorner"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.272"
@@ -26,6 +27,7 @@
         android:layout_width="66dp"
         android:layout_height="60dp"
         android:backgroundTint="#3A5606"
+        android:background="@drawable/roundcorner"
         android:onClick="save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +42,7 @@
         android:layout_width="223dp"
         android:layout_height="60dp"
         android:ems="10"
-        android:hint="желаемая сумма"
+        android:hint="Желаемая сумма"
         android:inputType="phone"
         android:textColor="#FFEB3B"
         android:textColorHint="#FFEB3B"
@@ -56,7 +58,7 @@
         android:layout_width="223dp"
         android:layout_height="60dp"
         android:ems="10"
-        android:hint="накоплено"
+        android:hint="Накоплено"
         android:inputType="phone"
         android:textColor="#FFEB3B"
         android:textColorHint="#FFEB3B"
@@ -70,28 +72,30 @@
 
     <TextView
         android:id="@+id/houseText"
-        android:layout_width="87dp"
-        android:layout_height="30dp"
-        android:text="на главную"
+        android:layout_width="112dp"
+        android:layout_height="40dp"
+        android:text="На главную"
         android:textColor="#FFEB3B"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.29"
+        app:layout_constraintHorizontal_bias="0.26"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.962" />
+        app:layout_constraintVertical_bias="0.97" />
 
     <TextView
         android:id="@+id/saveText"
-        android:layout_width="83dp"
-        android:layout_height="26dp"
-        android:text="сохранить"
+        android:layout_width="107dp"
+        android:layout_height="44dp"
+        android:text="Сохранить"
         android:textColor="#FFEB3B"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.765"
+        app:layout_constraintHorizontal_bias="0.779"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.956" />
+        app:layout_constraintVertical_bias="0.97" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

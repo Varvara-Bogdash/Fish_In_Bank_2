@@ -1,7 +1,7 @@
 package com.example.fishinbank;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,8 +11,6 @@ public class ChargeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_charge);
-
-        // Находим все кнопки и назначаем обработчики
         setupButton(R.id.eat, "Еда");
         setupButton(R.id.car, "Транспорт");
         setupButton(R.id.gift, "Подарки");
@@ -25,14 +23,11 @@ public class ChargeActivity extends AppCompatActivity {
         setupButton(R.id.shop, "Шоппинг");
         setupButton(R.id.notControl, "Другие расходы");
         setupButton(R.id.clinic, "Здоровье");
-
-        // Кнопка перехода к доходам
-        ImageButton incomeButton = findViewById(R.id.incomeButton);
+        Button incomeButton = findViewById(R.id.buttonCharge);
         incomeButton.setOnClickListener(v -> {
             startActivity(new Intent(this, IncomeActivity.class));
         });
     }
-
     private void setupButton(int buttonId, String category) {
         ImageButton button = findViewById(buttonId);
         button.setOnClickListener(v -> {
@@ -41,6 +36,7 @@ public class ChargeActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
+
 
 
 }

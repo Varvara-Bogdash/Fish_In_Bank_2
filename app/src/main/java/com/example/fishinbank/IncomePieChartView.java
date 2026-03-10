@@ -163,27 +163,6 @@ public class IncomePieChartView extends View {
         }
         invalidate();
     }
-
-    public float[] getData() {
-        return values.clone();
-    }
-
-    public String[] getCategoryNames() {
-        return categoryNames.clone();
-    }
-
-    public void clearData() {
-        values = new float[0];
-        categoryNames = new String[0];
-        useExternalData = false;
-        invalidate();
-    }
-
-    public void useDataManager() {
-        useExternalData = false;
-        invalidate();
-    }
-
     private void calculateScaleFactor(Map<String, Double> dataMap) {
         if (dataMap == null) return;
 
@@ -294,19 +273,6 @@ public class IncomePieChartView extends View {
             startAngle += sweepAngle;
             colorIndex++;
         }
-    }
-
-    private String shortenText(Paint paint, String text, float maxWidth) {
-        if (paint.measureText(text) <= maxWidth) {
-            return text;
-        }
-
-        int endIndex = text.length() - 1;
-        while (endIndex > 3 && paint.measureText(text.substring(0, endIndex) + "...") > maxWidth) {
-            endIndex--;
-        }
-
-        return text.substring(0, endIndex) + "...";
     }
 
     private void drawEmptyChart(Canvas canvas) {

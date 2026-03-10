@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FishInBank">
         <activity
+            android:name=".SettingsActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddChargeActivity"
             android:exported="false" />
         <activity

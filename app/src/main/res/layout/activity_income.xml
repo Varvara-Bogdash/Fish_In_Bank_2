@@ -12,6 +12,7 @@
         android:layout_width="65dp"
         android:layout_height="57dp"
         android:backgroundTint="#3A5606"
+        android:background="@drawable/roundcorner"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.182"
@@ -34,34 +35,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.123" />
 
-    <ImageButton
-        android:id="@+id/chargeButton"
-        android:layout_width="343dp"
-        android:layout_height="83dp"
-        android:backgroundTint="#3A5606"
-        android:onClick="charge"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.928"
-        app:srcCompat="@drawable/baseline_keyboard_backspace_24" />
-
-    <TextView
-        android:id="@+id/chargeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="расходы"
-        android:textColor="#FFEB3B"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.531"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.919" />
-
     <TextView
         android:id="@+id/incomeMoneyTet"
         android:layout_width="232dp"
@@ -81,6 +54,7 @@
         android:layout_width="65dp"
         android:layout_height="57dp"
         android:backgroundTint="#3A5606"
+        android:background="@drawable/roundcorner"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.181"
@@ -94,6 +68,7 @@
         android:layout_width="65dp"
         android:layout_height="57dp"
         android:backgroundTint="#3A5606"
+        android:background="@drawable/roundcorner"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.181"
@@ -121,6 +96,7 @@
         android:layout_width="65dp"
         android:layout_height="57dp"
         android:backgroundTint="#3A5606"
+        android:background="@drawable/roundcorner"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.182"
@@ -148,6 +124,7 @@
         android:layout_width="65dp"
         android:layout_height="57dp"
         android:backgroundTint="#3A5606"
+        android:background="@drawable/roundcorner"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.182"
@@ -169,4 +146,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.669" />
+
+    <Button
+        android:id="@+id/buttonCharge"
+        android:layout_width="311dp"
+        android:layout_height="79dp"
+        android:backgroundTint="#3A5606"
+        android:onClick="charge"
+        android:text="Расход &#8656; &#128181;"
+        android:textColor="#FFEB3B"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.965" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

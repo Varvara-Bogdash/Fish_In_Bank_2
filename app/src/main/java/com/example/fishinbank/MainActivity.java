@@ -22,36 +22,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Инициализация форматтера для чисел с разделением разрядов
         initDecimalFormatter();
-
-        // Инициализация менеджера сохранения состояния
         chartStateManager = new ChartStateManager(this);
-
-        // Загрузка сохраненных данных при создании активности
         loadSavedData();
-
         // Инициализация TextView для отображения доходов и расходов
         incomeTextView = findViewById(R.id.income);
         chargeTextView = findViewById(R.id.charge);
-
         // Инициализация диаграмм
         expenseChart = findViewById(R.id.expenseChart);
         incomeChart = findViewById(R.id.incomeChart);
-
-        // Настройка диаграмм с загруженными данными
         setupChartsWithLoadedData();
-
-        // Обновление отображения
         updateDisplay();
     }
-
-    /**
-     * Инициализация форматтера для чисел с разделением разрядов
-     */
     private void initDecimalFormatter() {
-        // Создаем DecimalFormat с разделителями разрядов
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
         symbols.setGroupingSeparator(' '); // Используем пробел как разделитель тысяч
         symbols.setDecimalSeparator('.'); // Десятичный разделитель - точка
@@ -60,10 +43,6 @@ public class MainActivity extends AppCompatActivity {
         decimalFormat.setGroupingSize(3); // Размер группы - 3 цифры (тысячи)
         decimalFormat.setGroupingUsed(true); // Включаем группировку разрядов
     }
-
-    /**
-     * Форматирование числа с разделением разрядов
-     */
     private String formatNumberWithSpaces(double number) {
         return decimalFormat.format(number) + " руб.";
     }
@@ -75,49 +54,34 @@ public class MainActivity extends AppCompatActivity {
         updateDisplay();
         refreshCharts();
     }
-
     @Override
     protected void onPause() {
         super.onPause();
         // Сохраняем состояние при уходе с экрана
         saveCurrentState();
     }
-
     @Override
     protected void onStop() {
         super.onStop();
         // Сохраняем состояние при выходе из приложения
         saveCurrentState();
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         // Финальное сохранение при уничтожении активности
         saveCurrentState();
     }
-
-    /**
-     * Загрузка сохраненных данных из SharedPreferences
-     */
     private void loadSavedData() {
         if (chartStateManager != null) {
             chartStateManager.loadAllData();
         }
     }
-
-    /**
-     * Сохранение текущего состояния в SharedPreferences
-     */
     private void saveCurrentState() {
         if (chartStateManager != null) {
             chartStateManager.saveAllData();
         }
     }
-
-    /**
-     * Настройка диаграмм с загруженными данными
-     */
     private void setupChartsWithLoadedData() {
         if (expenseChart != null && DataManager.expenseValues.length > 0) {
             expenseChart.setData(DataManager.expenseValues);
@@ -125,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
                 expenseChart.setCategoryNames(DataManager.expenseCategories);
             }
         }
-
         if (incomeChart != null && DataManager.incomeValues.length > 0) {
             incomeChart.setData(DataManager.incomeValues);
             if (DataManager.incomeCategories.length > 0) {
@@ -133,19 +96,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-    /**
-     * Обновление отображения текстовых данных
-     */
     private void updateDisplay() {
-        // Обновляем отображение доходов и расходов с разделением разрядов
         String incomeText = formatNumberWithSpaces(DataManager.totalIncome);
         String chargeText = formatNumberWithSpaces(DataManager.totalExpense);
-
         incomeTextView.setText(incomeText);
         chargeTextView.setText(chargeText);
-
-        // Обновляем данные диаграмм если они изменились
         if (DataManager.hasExpenseData()) {
             DataManager.updateExpenseChartData();
         }
@@ -153,81 +108,46 @@ public class MainActivity extends AppCompatActivity {
             DataManager.updateIncomeChartData();
         }
     }
-
-    /**
-     * Обновление отображения диаграмм
-     */
     private void refreshCharts() {
         if (expenseChart != null) {
-            // Если есть данные для отображения
             if (DataManager.expenseValues.length > 0) {
                 expenseChart.setData(DataManager.expenseValues);
                 if (DataManager.expenseCategories.length > 0) {
                     expenseChart.setCategoryNames(DataManager.expenseCategories);
                 }
             }
-            expenseChart.invalidate(); // Принудительная перерисовка
+            expenseChart.invalidate();
         }
 
         if (incomeChart != null) {
-            // Если есть данные для отображения
             if (DataManager.incomeValues.length > 0) {
                 incomeChart.setData(DataManager.incomeValues);
                 if (DataManager.incomeCategories.length > 0) {
                     incomeChart.setCategoryNames(DataManager.incomeCategories);
                 }
             }
-            incomeChart.invalidate(); // Принудительная перерисовка
+            incomeChart.invalidate();
         }
     }
-
-    /**
-     * Обработчик нажатия кнопки добавления расхода/дохода
-     */
     public void add(View view) {
         Intent intent = new Intent(this, ChargeActivity.class);
         startActivity(intent);
     }
-
-    /**
-     * Обработчик нажатия кнопки информации об авторе
-     */
     public void author(View view) {
         Intent intent = new Intent(this, AuthorClass.class);
         startActivity(intent);
     }
-
-    /**
-     * Обработчик нажатия кнопки целей
-     */
     public void purpose(View view) {
         Intent intent = new Intent(this, PurposeActivity.class);
         startActivity(intent);
     }
-
-    /**
-     * Метод для принудительного обновления данных (можно вызывать из других активностей)
-     */
-    public void forceDataUpdate() {
-        loadSavedData();
-        updateDisplay();
-        refreshCharts();
-    }
-
-    /**
-     * Метод для сброса всех данных (для тестирования)
-     */
     public void resetAllData(View view) {
-        // Просто сбрасываем отображение
         incomeTextView.setText("0.00 руб.");
         chargeTextView.setText("0.00 руб.");
-
-        // Сбрасываем диаграммы
         if (expenseChart != null) {
             expenseChart.setData(new float[0]);
             expenseChart.invalidate();
         }
-
         if (incomeChart != null) {
             incomeChart.setData(new float[0]);
             incomeChart.invalidate();
@@ -236,10 +156,6 @@ public class MainActivity extends AppCompatActivity {
         updateDisplay();
         refreshCharts();
     }
-
-    /**
-     * Метод для обновления данных после возвращения из другой активности
-     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

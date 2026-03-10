@@ -6,13 +6,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/fon"
     tools:context=".MainActivity">
-
-    <!-- Диаграмма расходов -->
-
-    <!-- Диаграмма доходов -->
-
-    <!-- Остальные элементы вашего макета остаются без изменений -->
-
     <TextView
         android:id="@+id/income"
         android:layout_width="162dp"
@@ -67,7 +60,8 @@
         android:id="@+id/author"
         android:layout_width="66dp"
         android:layout_height="60dp"
-        android:background="#365006"
+        android:backgroundTint="#365006"
+        android:background="@drawable/roundcorner"
         android:onClick="author"
         android:outlineAmbientShadowColor="#F44336"
         android:outlineSpotShadowColor="#F44336"
@@ -83,7 +77,8 @@
         android:id="@+id/purpose"
         android:layout_width="66dp"
         android:layout_height="60dp"
-        android:background="#365006"
+        android:backgroundTint="#365006"
+        android:background="@drawable/roundcorner"
         android:onClick="purpose"
         android:outlineAmbientShadowColor="#F44336"
         android:outlineSpotShadowColor="#F44336"
@@ -99,7 +94,8 @@
         android:id="@+id/plus"
         android:layout_width="66dp"
         android:layout_height="60dp"
-        android:background="#365006"
+        android:backgroundTint="#365006"
+        android:background="@drawable/roundcorner"
         android:onClick="add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -158,7 +154,7 @@
         android:layout_height="56dp"
         android:background="#365006"
         android:gravity="center"
-        android:text="Доход:"
+        android:text="	&#128070; Доход:"
         android:textColor="#FFEB3B"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -174,7 +170,7 @@
         android:layout_height="56dp"
         android:background="#365006"
         android:gravity="center"
-        android:text="Расход:"
+        android:text="	&#128071; Расход:"
         android:textColor="#FFEB3B"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -189,6 +185,7 @@
         android:layout_width="275dp"
         android:layout_height="64dp"
         android:backgroundTint="#365006"
+        android:background="@drawable/roundcorner"
         android:onClick="resetAllData"
         android:tint="#FFE500"
         app:layout_constraintBottom_toBottomOf="parent"

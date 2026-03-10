@@ -47,16 +47,6 @@ public class DataManager {
         updateIncomeChartData();
     }
 
-    // Метод для получения суммы расходов по категории
-    public static double getExpenseByCategory(String category) {
-        return expensesByCategory.getOrDefault(category, 0.0);
-    }
-
-    // Метод для получения суммы доходов по категории
-    public static double getIncomeByCategory(String category) {
-        return incomesByCategory.getOrDefault(category, 0.0);
-    }
-
     // Метод для сброса всех данных (для тестирования)
     public static void resetData() {
         totalIncome = 0.0;
@@ -96,69 +86,6 @@ public class DataManager {
             i++;
         }
     }
-
-    // Метод для установки данных расходов (например, при загрузке из сохраненного состояния)
-    public static void setExpenseData(Map<String, Double> data) {
-        expensesByCategory = new HashMap<>(data);
-        totalExpense = 0.0;
-
-        for (Double value : expensesByCategory.values()) {
-            totalExpense += value;
-        }
-
-        updateExpenseChartData();
-    }
-
-    // Метод для установки данных доходов (например, при загрузке из сохраненного состояния)
-    public static void setIncomeData(Map<String, Double> data) {
-        incomesByCategory = new HashMap<>(data);
-        totalIncome = 0.0;
-
-        for (Double value : incomesByCategory.values()) {
-            totalIncome += value;
-        }
-
-        updateIncomeChartData();
-    }
-
-    // Метод для получения данных расходов в формате Map<String, Float> (для совместимости с ChartStateManager)
-    public static Map<String, Float> getExpenseDataAsFloatMap() {
-        Map<String, Float> result = new HashMap<>();
-        for (Map.Entry<String, Double> entry : expensesByCategory.entrySet()) {
-            result.put(entry.getKey(), entry.getValue().floatValue());
-        }
-        return result;
-    }
-
-    // Метод для получения данных доходов в формате Map<String, Float> (для совместимости с ChartStateManager)
-    public static Map<String, Float> getIncomeDataAsFloatMap() {
-        Map<String, Float> result = new HashMap<>();
-        for (Map.Entry<String, Double> entry : incomesByCategory.entrySet()) {
-            result.put(entry.getKey(), entry.getValue().floatValue());
-        }
-        return result;
-    }
-
-    // Метод для получения количества категорий расходов
-    public static int getExpenseCategoryCount() {
-        return expensesByCategory.size();
-    }
-
-    // Метод для получения количества категорий доходов
-    public static int getIncomeCategoryCount() {
-        return incomesByCategory.size();
-    }
-
-    // Метод для получения всех категорий расходов
-    public static String[] getAllExpenseCategories() {
-        return expensesByCategory.keySet().toArray(new String[0]);
-    }
-
-    // Метод для получения всех категорий доходов
-    public static String[] getAllIncomeCategories() {
-        return incomesByCategory.keySet().toArray(new String[0]);
-    }
-
     // Метод для проверки наличия данных
     public static boolean hasExpenseData() {
         return !expensesByCategory.isEmpty();
@@ -168,8 +95,4 @@ public class DataManager {
         return !incomesByCategory.isEmpty();
     }
 
-    // Метод для получения общего баланса (доходы - расходы)
-    public static double getBalance() {
-        return totalIncome - totalExpense;
-    }
 }

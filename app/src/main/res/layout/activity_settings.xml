@@ -38,11 +38,11 @@
 
     <Button
         android:id="@+id/fonbutton"
-        android:layout_width="356dp"
-        android:layout_height="90dp"
+        android:layout_width="375dp"
+        android:layout_height="94dp"
         android:backgroundTint="#365006"
         android:onClick="fonChange"
-        android:text="&#127799; Изменить цвет фона на чёрный"
+        android:text="&#128257; Изменить цвет фона на чёрный"
         android:textColor="#FFEB3B"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

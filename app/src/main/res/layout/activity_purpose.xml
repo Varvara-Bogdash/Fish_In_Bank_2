@@ -13,7 +13,7 @@
         android:layout_height="69dp"
         android:background="#3A5606"
         android:gravity="center"
-        android:text="Осталось накопить:"
+        android:text="&#128640; Осталось накопить:"
         android:textColor="#FFEB3B"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -100,11 +100,11 @@
 
     <TextView
         android:id="@+id/allCountText"
-        android:layout_width="240dp"
+        android:layout_width="235dp"
         android:layout_height="54dp"
         android:background="#3A5606"
         android:gravity="center"
-        android:text="Желаемая сумма: "
+        android:text="&#127919; Желаемая сумма: "
         android:textColor="#FFEB3B"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -116,11 +116,11 @@
 
     <TextView
         android:id="@+id/cointText"
-        android:layout_width="240dp"
+        android:layout_width="235dp"
         android:layout_height="52dp"
         android:background="#3A5606"
         android:gravity="center"
-        android:text="Накоплено: "
+        android:text="&#127993; Накоплено: "
         android:textColor="#FFEB3B"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -198,7 +198,7 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.773"
+        app:layout_constraintHorizontal_bias="0.77"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.146" />
@@ -234,10 +234,10 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.773"
+        app:layout_constraintHorizontal_bias="0.77"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.241" />
+        app:layout_constraintVertical_bias="0.24" />
 
     <Button
         android:id="@+id/button4"

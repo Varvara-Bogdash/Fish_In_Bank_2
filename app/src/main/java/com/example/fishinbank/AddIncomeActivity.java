@@ -8,7 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class AddIncomeActivity extends AppCompatActivity {
+public class AddIncomeActivity extends BaseActivity {
 
     private EditText etAmount;
     private TextView tvCategory;
@@ -16,6 +16,7 @@ public class AddIncomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setupBackground(R.id.activity_add_income);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_income);
 

@@ -1,5 +1,6 @@
 package com.example.fishinbank;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.graphics.Color;
 import android.util.Log;
@@ -10,7 +11,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends BaseActivity {
     ConstraintLayout layout;
 
     private boolean isColorMode = false;
@@ -23,14 +24,15 @@ public class SettingsActivity extends AppCompatActivity {
     }
     public void fonChange(View view) {
         if (!isColorMode) {
-            layout.setBackgroundResource(R.drawable.new_fon);
+            setupBackground(R.id.root_layout);
         } else {
-            layout.setBackgroundResource(R.drawable.fon);
+            setupBackground(R.id.root_layout);
         }
         isColorMode = !isColorMode; // переключение флага
     }
 
     public void home(View view) {
-
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }

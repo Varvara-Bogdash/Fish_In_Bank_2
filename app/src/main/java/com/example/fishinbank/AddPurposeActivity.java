@@ -6,12 +6,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-public class AddPurposeActivity extends AppCompatActivity {
+public class AddPurposeActivity extends BaseActivity {
     EditText allMoneyText;
     EditText moneyText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setupBackground(R.id.activity_add_purpose);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_purpose);
 

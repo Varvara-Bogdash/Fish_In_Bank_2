@@ -5,10 +5,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class ChargeActivity extends AppCompatActivity {
+public class ChargeActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setupBackground(R.id.activity_charge);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_charge);
         setupButton(R.id.eat, "Еда");

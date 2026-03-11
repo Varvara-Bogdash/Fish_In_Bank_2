@@ -17,7 +17,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
-public class PurposeActivity extends AppCompatActivity {
+public class PurposeActivity extends BaseActivity {
     TextView remainCountText;
     TextView allCountText;
     TextView countText;
@@ -72,6 +72,7 @@ public class PurposeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setupBackground(R.id.activity_purpose);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_purpose);
         remainCountText = findViewById(R.id.remainCountText);

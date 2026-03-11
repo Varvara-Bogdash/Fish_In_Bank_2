@@ -7,10 +7,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class IncomeActivity extends AppCompatActivity {
+public class IncomeActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setupBackground(R.id.activity_income);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_income);
         // Находим все кнопки категорий доходов и назначаем обработчики

@@ -6,10 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class AuthorClass extends AppCompatActivity {
+public class AuthorClass extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setupBackground(R.id.activity_author);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_author_class);
     }

@@ -12,10 +12,9 @@ public class AddPurposeActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setupBackground(R.id.activity_add_purpose);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_purpose);
-
+        setupBackground(R.id.activity_add_purpose);
         allMoneyText = findViewById(R.id.allMoneyAdd);
         moneyText = findViewById(R.id.moneyAdd);
     }

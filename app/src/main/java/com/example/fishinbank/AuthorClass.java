@@ -10,9 +10,9 @@ public class AuthorClass extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setupBackground(R.id.activity_author);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_author_class);
+        setupBackground(R.id.activity_author);
     }
 
     public void home(View view) {

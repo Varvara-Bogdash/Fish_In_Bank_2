@@ -11,9 +11,9 @@ public class IncomeActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setupBackground(R.id.activity_income);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_income);
+        setupBackground(R.id.activity_income);
         // Находим все кнопки категорий доходов и назначаем обработчики
         setupButton(R.id.investitionButton, "Доходы по вкладам");
         setupButton(R.id.imageButton3, "Доходы по инвестициям");

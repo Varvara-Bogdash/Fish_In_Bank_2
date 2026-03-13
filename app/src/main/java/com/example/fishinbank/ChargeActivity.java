@@ -9,9 +9,9 @@ public class ChargeActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setupBackground(R.id.activity_charge);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_charge);
+        setupBackground(R.id.activity_charge);
         setupButton(R.id.eat, "Еда");
         setupButton(R.id.car, "Транспорт");
         setupButton(R.id.gift, "Подарки");

@@ -16,10 +16,9 @@ public class AddIncomeActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setupBackground(R.id.activity_add_income);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_income);
-
+        setupBackground(R.id.activity_add_income);
         tvCategory = findViewById(R.id.tv_category);
         etAmount = findViewById(R.id.et_amount);
         Button btnAdd = findViewById(R.id.btn_add);

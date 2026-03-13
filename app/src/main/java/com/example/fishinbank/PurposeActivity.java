@@ -72,9 +72,9 @@ public class PurposeActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setupBackground(R.id.activity_purpose);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_purpose);
+        setupBackground(R.id.activity_purpose);
         remainCountText = findViewById(R.id.remainCountText);
         allCountText = findViewById(R.id.allCountText);
         countText = findViewById(R.id.cointText);

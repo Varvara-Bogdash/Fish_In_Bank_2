@@ -20,9 +20,9 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setupBackground(R.id.activity_main);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setupBackground(R.id.activity_main);
         initDecimalFormatter();
         chartStateManager = new ChartStateManager(this);
         loadSavedData();
@@ -51,26 +51,22 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Обновляем отображение при возвращении на экран
         updateDisplay();
         refreshCharts();
     }
     @Override
     protected void onPause() {
         super.onPause();
-        // Сохраняем состояние при уходе с экрана
         saveCurrentState();
     }
     @Override
     protected void onStop() {
         super.onStop();
-        // Сохраняем состояние при выходе из приложения
         saveCurrentState();
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Финальное сохранение при уничтожении активности
         saveCurrentState();
     }
     private void loadSavedData() {
@@ -160,7 +156,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 || requestCode == 2) { // Можно задать коды запросов
+        if (requestCode == 1 || requestCode == 2) {
             loadSavedData();
             updateDisplay();
             refreshCharts();
